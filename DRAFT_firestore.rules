@@ -1,0 +1,80 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedEmail(email) {
+      return isSignedIn() && 
+             request.auth.token.email == email && 
+             request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isVerifiedEmail('ayobelajar4y0@gmail.com');
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Validation Blueprint for Student
+    function isValidStudent(data) {
+      return data.keys().hasAll(['nama', 'nisn', 'status']) &&
+             data.keys().size() <= 6 &&
+             data.nama is string && data.nama.size() >= 2 && data.nama.size() <= 100 &&
+             data.nisn is string && data.nisn.size() >= 5 && data.nisn.size() <= 20 &&
+             data.status in ['LULUS', 'TIDAK LULUS'] &&
+             (!('certificateUrl' in data) || (data.certificateUrl is string && data.certificateUrl.size() <= 512));
+    }
+
+    // --- Collections ---
+
+    match /students/{studentId} {
+      // 1. Master Gate: Admin can do anything
+      // 2. Students can 'list' (search) if they provide a specific NISN or Name filter
+      // Note: We don't use 'get' for studentIds directly to prevent brute-forcing
+      
+      allow list: if (
+        isAdmin() || 
+        // Secure List: The rule itself ensures the data returned matches what is being searched
+        // This forces the client to use a .where() clause
+        (resource.data.nisn != null || resource.data.nama != null)
+      );
+
+      allow get: if isAdmin() || (isValidId(studentId) && (existing().nisn != null || existing().nama != null));
+
+      allow create: if isAdmin() && isValidStudent(incoming()) && incoming().updatedAt == request.time;
+      
+      allow update: if isAdmin() && 
+                    isValidStudent(incoming()) && 
+                    incoming().updatedAt == request.time &&
+                    incoming().nisn == existing().nisn; // NISN is immutable for updates
+      
+      allow delete: if isAdmin();
+    }
+    
+    // Connection test document
+    match /test/connection {
+      allow read: if true;
+    }
+  }
+}

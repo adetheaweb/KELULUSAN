@@ -1,0 +1,6 @@
+{
+  "name": "SI Lulus - Sistem Informasi Kelulusan",
+  "description": "Aplikasi untuk mengecek status kelulusan dan mendownload surat kelulusan siswa berdasarkan Nama atau NISN.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

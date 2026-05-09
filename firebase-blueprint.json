@@ -1,0 +1,41 @@
+{
+  "entities": {
+    "Student": {
+      "title": "Student",
+      "description": "Graduation data for a student",
+      "type": "object",
+      "properties": {
+        "nama": {
+          "type": "string",
+          "description": "Full name of the student"
+        },
+        "nisn": {
+          "type": "string",
+          "description": "Student identification number (NISN)"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["LULUS", "TIDAK LULUS"],
+          "description": "Graduation status"
+        },
+        "certificateUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "Link to download the graduation certificate"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp"
+        }
+      },
+      "required": ["nama", "nisn", "status"]
+    }
+  },
+  "firestore": {
+    "/students/{studentId}": {
+      "schema": "Student",
+      "description": "Collection of student graduation data"
+    }
+  }
+}
