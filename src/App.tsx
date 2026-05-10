@@ -194,7 +194,7 @@ export default function App() {
         <div className="w-full lg:w-1/3 bg-emerald-900 text-white p-8 lg:p-16 flex flex-col justify-between border-r border-emerald-950">
           <div>
             <span className="px-3 py-1 bg-emerald-800/50 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] border border-emerald-700/50">
-              Tahun Ajaran 2023/2024
+              Tahun Ajaran 2025/2026
             </span>
             <h2 className="text-4xl lg:text-5xl font-serif mt-8 leading-[1.1] font-bold italic text-emerald-50">
               Cek Status & <br />Unduh SKL Anda
