@@ -10,7 +10,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { collection, query, where, getDocs, limit, addDoc, serverTimestamp, doc, getDocFromServer, writeBatch } from 'firebase/firestore';
-import { PlusCircle, Search as SearchIcon, ShieldCheck, Loader2, Download, Upload, FileSpreadsheet } from 'lucide-react';
+import { PlusCircle, Search as SearchIcon, ShieldCheck, Loader2, Download, Upload, FileSpreadsheet, MessageCircle } from 'lucide-react';
 import Papa from 'papaparse';
 import { db, auth } from './lib/firebase';
 import { Student, GraduationStatus, OperationType, FirestoreErrorInfo } from './types';
@@ -360,6 +360,20 @@ export default function App() {
           </footer>
         </div>
       </div>
+
+      {/* Floating WhatsApp Help Button */}
+      <a
+        href="https://wa.me/6282115654790?text=Halo%20Admin%2C%20saya%20butuh%20bantuan%20terkait%20Portal%20Kelulusan."
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-[60] bg-emerald-600 text-white p-4 rounded-full shadow-2xl shadow-emerald-200 hover:bg-emerald-700 hover:scale-110 transition-all flex items-center justify-center group"
+        title="Hubungi Bantuan WhatsApp"
+      >
+        <MessageCircle className="w-6 h-6" />
+        <span className="max-w-0 overflow-hidden group-hover:max-w-xs group-hover:ml-2 transition-all duration-300 font-bold text-sm whitespace-nowrap">
+          Chat Bantuan
+        </span>
+      </a>
     </div>
   );
 }

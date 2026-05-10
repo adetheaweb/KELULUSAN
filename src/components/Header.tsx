@@ -14,8 +14,9 @@ export default function Header() {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login Error:", error);
+      alert("Gagal Login: " + (error.message || "Pastikan domain ini sudah diizinkan di Firebase Console."));
     }
   };
 
@@ -40,7 +41,14 @@ export default function Header() {
           <nav className="hidden md:flex gap-8 text-sm font-medium">
             <a href="#" className="border-b-2 border-white pb-1">Beranda</a>
             <a href="#" className="text-emerald-200 hover:text-white transition-all">Informasi</a>
-            <a href="#" className="text-emerald-200 hover:text-white transition-all">Bantuan</a>
+            <a 
+              href="https://wa.me/6282115654790?text=Halo%20Admin%2C%20saya%20butuh%20bantuan%20terkait%20Portal%20Kelulusan." 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-emerald-200 hover:text-white transition-all"
+            >
+              Bantuan
+            </a>
           </nav>
 
           <div className="h-6 w-px bg-white/20 hidden md:block" />
@@ -49,8 +57,8 @@ export default function Header() {
           {user ? (
             <div className="flex items-center gap-3">
               <div className="hidden sm:block text-right">
-                <p className="text-xs font-bold text-gray-900 leading-none">{user.displayName}</p>
-                <p className="text-[10px] text-gray-500">{user.email}</p>
+                <p className="text-xs font-bold text-white leading-none">{user.displayName}</p>
+                <p className="text-[10px] text-emerald-200">{user.email}</p>
               </div>
               <button 
                 onClick={handleLogout}
